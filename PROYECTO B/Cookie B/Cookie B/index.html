@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Games - Tienda de Videojuegos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #f8f9fa;
+            --card: #fff;
+            --text: #333;
+            --accent: #4a6fa5;
+            --border: #e0e0e0;
+            --discount: #28a745;
+            --free: #218838;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: var(--card);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 45px;
+        }
+        
+        .logo h1 {
+            font-weight: 300;
+            font-size: 1.8rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .cart-icon {
+            position: relative;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .cart-icon:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: 0;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--accent);
+        }
+        
+        .game-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .game-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+        }
+        
+        .game-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent);
+        }
+        
+        .game-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .game-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .game-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .game-price {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+        
+        .discount {
+            background: #e8f5e9;
+            color: var(--discount);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        
+        .free {
+            color: var(--free);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .game-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--accent);
+        }
+        
+        footer {
+            background: var(--card);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .creators {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .creator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .copyright {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Cookie Games">
+                <h1>COOKIE GAMES</h1>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-outline" onclick="showHome()">
+                    <i class="fas fa-home"></i> Inicio
+                </button>
+                <button class="btn btn-outline" onclick="showLogin()">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+                <button class="btn btn-outline" onclick="showRegister()">
+                    <i class="fas fa-user-plus"></i> Registro
+                </button>
+                <div class="cart-icon" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+            </div>
+    </header>
+
+    <!-- Main Content - 4 Columnas -->
+    <div class="main-container">
+        <!-- Columna Novedades -->
+        <section class="section">
+            <h2 class="section-title">Novedades</h2>
+            <div class="game-list">
+                <!-- Juego 1 -->
+                <div class="game-item" onclick="openGame('Split Fiction')">
+                    <img src="assets/split-fiction.jpg" alt="Split Fiction" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Split Fiction</h3>
+                        <p class="game-price">$39.99</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Split Fiction', 39.99)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Split Fiction')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 2 -->
+                <div class="game-item" onclick="openGame('Hell Divers II')">
+                    <img src="assets/hell-divers.jpg" alt="Hell Divers II" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Hell Divers II</h3>
+                        <p class="game-price">$29.99</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Hell Divers II', 29.99)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Hell Divers II')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 3 -->
+                <div class="game-item" onclick="openGame('Harry Potter Collection')">
+                    <img src="assets/harry-potter.jpg" alt="Harry Potter Collection" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Harry Potter Collection</h3>
+                        <p class="game-price">$29.99</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Harry Potter Collection', 29.99)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Harry Potter Collection')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 4 -->
+                <div class="game-item" onclick="openGame('Death Stranding')">
+                    <img src="assets/death-stranding.jpg" alt="Death Stranding" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Death Stranding</h3>
+                        <p class="game-price">$18.99</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Death Stranding', 18.99)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Death Stranding')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Columna Destacados -->
+        <section class="section">
+            <h2 class="section-title">Destacados</h2>
+            <div class="game-list">
+                <!-- Juego 1 -->
+                <div class="game-item" onclick="openGame('Cake Bash')">
+                    <img src="assets/cake-bash.jpg" alt="Cake Bash" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Cake Bash</h3>
+                        <p class="game-price">$10.49</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Cake Bash', 10.49)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Cake Bash')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 2 -->
+                <div class="game-item" onclick="openGame('Party Animals')">
+                    <img src="assets/party-animals.jpg" alt="Party Animals" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Party Animals</h3>
+                        <p class="game-price">$10.49</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Party Animals', 10.49)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Party Animals')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 3 -->
+                <div class="game-item" onclick="openGame('Popucom')">
+                    <img src="assets/popucom.jpg" alt="Popucom" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Popucom</h3>
+                        <p class="game-price">$9.44</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Popucom', 9.44)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Popucom')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 4 -->
+                <div class="game-item" onclick="openGame('Core Keeper')">
+                    <img src="assets/core-keeper.jpg" alt="Core Keeper" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Core Keeper</h3>
+                        <p class="game-price">$7.99</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Core Keeper', 7.99)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Core Keeper')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Columna Ofertas -->
+        <section class="section">
+            <h2 class="section-title">Ofertas</h2>
+            <div class="game-list">
+                <!-- Juego 1 -->
+                <div class="game-item" onclick="openGame('Super Crazy Rhythm Castle')">
+                    <img src="assets/super-crazy-rhythm.jpg" alt="Super Crazy Rhythm Castle" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Super Crazy Rhythm Castle</h3>
+                        <p class="game-price">
+                            <span class="original-price">$10.49</span> $0.52 <span class="discount">-90%</span>
+                        </p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Super Crazy Rhythm Castle', 0.52)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Super Crazy Rhythm Castle')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 2 -->
+                <div class="game-item" onclick="openGame('Poly Bridge')">
+                    <img src="assets/poli-bridge.jpg" alt="Poly Bridge" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Poly Bridge</h3>
+                        <p class="game-price">
+                            <span class="original-price">$5.79</span> $0.57 <span class="discount">-90%</span>
+                        </p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Poly Bridge', 0.57)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Poly Bridge')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 3 -->
+                <div class="game-item" onclick="openGame('Golf With Your Friends')">
+                    <img src="assets/golf-friends.jpg" alt="Golf With Your Friends" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Golf With Your Friends</h3>
+                        <p class="game-price">
+                            <span class="original-price">$7.99</span> $2.39 <span class="discount">-70%</span>
+                        </p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Golf With Your Friends', 2.39)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Golf With Your Friends')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 4 -->
+                <div class="game-item" onclick="openGame('Overcooked! All You Can Eat')">
+                    <img src="assets/overcooked.jpg" alt="Overcooked! All You Can Eat" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Overcooked! All You Can Eat</h3>
+                        <p class="game-price">
+                            <span class="original-price">$18.99</span> $6.42 <span class="discount">-66%</span>
+                        </p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'Overcooked! All You Can Eat', 6.42)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'Overcooked! All You Can Eat')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Columna Gratis -->
+        <section class="section">
+            <h2 class="section-title">Juegos Gratis</h2>
+            <div class="game-list">
+                <!-- Juego 1 -->
+                <div class="game-item" onclick="openGame('DOTA 2')">
+                    <img src="assets/dota2.jpg" alt="DOTA 2" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">DOTA 2</h3>
+                        <p class="free">FREE TO PLAY</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'DOTA 2', 0)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'DOTA 2')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 2 -->
+                <div class="game-item" onclick="openGame('RIVALS')">
+                    <img src="assets/rivals.jpg" alt="RIVALS" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">RIVALS</h3>
+                        <p class="free">FREE TO PLAY</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'RIVALS', 0)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'RIVALS')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 3 -->
+                <div class="game-item" onclick="openGame('REMATCH')">
+                    <img src="assets/rematch.jpg" alt="REMATCH" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">REMATCH</h3>
+                        <p class="free">FREE TO PLAY</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'REMATCH', 0)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'REMATCH')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Juego 4 -->
+                <div class="game-item" onclick="openGame('CALL OF DUTY')">
+                    <img src="assets/cod.jpg" alt="CALL OF DUTY" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">CALL OF DUTY</h3>
+                        <p class="free">FREE TO PLAY</p>
+                    </div>
+                    <div class="game-actions">
+                        <button class="action-btn" onclick="addToCart(event, 'CALL OF DUTY', 0)">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button class="action-btn" onclick="openComments(event, 'CALL OF DUTY')">
+                            <i class="far fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="creators">
+            <div class="creator">
+                <i class="fas fa-user"></i>
+                <span>KATHERINE VANESSA NOBOA NOVOA</span>
+            </div>
+            <div class="creator">
+                <i class="fas fa-user"></i>
+                <span>JUAN CARLOS MACIAS ROMERO</span>
+            </div>
+            <div class="creator">
+                <i class="fas fa-user"></i>
+                <span>WILIAM SANTIAGO OÑA CARVAJAL</span>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2023 Cookie Games. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Variables globales
+        let cartItems = [];
+        let currentGame = null;
+
+        // Funciones principales
+        function addToCart(event, name, price) {
+            event.stopPropagation();
+            cartItems.push({
+                name,
+                price
+            });
+            updateCartCount();
+            showAlert(`"${name}" añadido al carrito`);
+        }
+
+        function updateCartCount() {
+            document.getElementById('cart-count').textContent = cartItems.length;
+        }
+
+        function openCart() {
+            if (cartItems.length === 0) {
+                showAlert("Tu carrito está vacío");
+                return;
+            }
+
+            const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+            const itemsList = cartItems.map(item =>
+                `• ${item.name} - $${item.price.toFixed(2)}`
+            ).join('\n');
+
+            showAlert(`🛒 Carrito (${cartItems.length} items)\n\n${itemsList}\n\n💵 Total: $${total.toFixed(2)}`);
+        }
+
+        function openGame(name) {
+            currentGame = name;
+            showAlert(`Abriendo "${name}"...`);
+            // Redirigir a la página del juego en producción
+        }
+
+        function openComments(event, name) {
+            event.stopPropagation();
+            currentGame = name;
+            const comment = prompt(`Deja tu comentario sobre "${name}":`);
+            if (comment) {
+                showAlert(`✔ Comentario sobre "${name}" enviado`);
+            }
+        }
+
+        function showHome() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function showRegister() {
+            showAlert("Formulario de registro abierto");
+            // Abrir modal de registro en producción
+        }
+
+        function showLogin() {
+            const email = prompt("Ingrese su correo electrónico:");
+            if (email) {
+                const password = prompt("Ingrese su contraseña:");
+                if (password) {
+                    showAlert(`Bienvenido de vuelta! (${email})`);
+                    // Aquí iría la lógica real de autenticación
+                }
+            }
+        }
+
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+        });
+    </script>
+</body>
+
+</html>
